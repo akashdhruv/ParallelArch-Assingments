@@ -9,10 +9,10 @@ program loop_main
    real :: time
    integer :: threads
 
-   M = 2**10
-   N = 2**10
+   M = 2**13
+   N = 2**13
 
-   threads = 2**0
+   threads = 2**1
 
    ! Function call loop_naive(rows(in), columns(in), threads(in), time(out) )
    call loop_naive(M,N,threads,time)

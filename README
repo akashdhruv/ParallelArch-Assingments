@@ -7,7 +7,7 @@ HOW TO RUN:
 
   3.  Type ' make loop_f ' to compile fortran modules or ' make loop_c ' to compile C modules
 
-  4.  Type ' make all ' to compile both fortran and c_modules
+  4.  Type ' make all ' to compile both fortran and C modules
 
   4.  Type ' make clean ' to destroy the rebuildables
 

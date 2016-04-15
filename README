@@ -1,0 +1,37 @@
+HOW TO RUN:
+
+  1.  Make sure you have latest version of FORTRAN, OpenMP and make utility installed.
+
+  2.  If your gfortran and c complier paths are not set in the environment variable $PATH,
+      then set FF=/Path/To/Your/Fortran/Compiler and CC=/Path/To/Your/C/Compiler in Makefile
+
+  3.  Type ' make loop_f ' to compile fortran modules or ' make loop_c ' to compile C modules
+
+  4.  Type ' make all ' to compile both fortran and c_modules
+
+  4.  Type ' make clean ' to destroy the rebuildables
+
+CODE STRUCTURE:
+
+  1.  loop_main.F90 contains the main program which calls the functions loop_naive and loop_tile
+      defined in the module loop_module.F90. 
+
+  2.  loop_naive is called by call loop_naive(rows,columns,threads,time). time is the returned variable.
+
+  3.  loop_tile is called by call loop_tile(rows,columns,threads,i_tile,j_tile,time). time is the returned variable.
+
+  4.  To add more test cases, just modify the existing calls in loop_main.F90 or add more calls.
+
+  5.  The C code is just one file named loop_main_c.c
+
+REASON FOR CHOOSING FORTRAN:
+
+  1.  Wanted to test loop tiling in FORTRAN.
+  2.  FORTRAN is built for scientific computing and it is worth to test this technique with it.
+
+NOTES:
+
+  1. Arrays in FORTRAN are column major.
+  2. Indexing in FORTRAN starts from 1.
+
+

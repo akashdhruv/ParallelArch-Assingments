@@ -1,0 +1,25 @@
+HOW TO RUN:
+
+  1.  Make sure you have latest version of FORTRAN, OpenMP and make utility installed.
+
+  2.  Type ' make ' to compile
+
+  3.  Type ' make clean ' to destroy the rebuildables
+
+CODE STRUCTURE:
+
+  1.  loop_main.F90 contains the main program which calls the functions loop_naive and loop_tile
+      defined in the module loop_module.F90. 
+
+  2.  loop_naive is called by call loop_naive(rows,columns,threads,time). time is the returned variable.
+
+  3.  loop_tile is called by call loop_tile(rows,columns,threads,i_tile,j_tile,time). time is the returned variable.
+
+  4.  To add more test cases, just modify the existing calls in loop_main.F90 or add more calls.
+
+NOTES:
+
+  1. Arrays in FORTRAN are column major.
+  2. Indexing in FORTRAN starts from 1.
+
+

@@ -24,16 +24,23 @@ program loop_main
 
    integer :: M,N
    integer :: i_tile, j_tile
-   real :: time(5,10)
+
+   real :: time(6,10)
    real :: avgtime(5)
+
+   double precision :: sumc(6,10)
+   double precision :: avgsum(6)
+
    integer :: threads
    integer :: i,j
-
+   
    time = 0.0
    avgtime = 0.0
+   sumc = 0.0
+   avgsum = 0.0
 
-   M = 2**13
-   N = 2**13
+   M = 2**10
+   N = 2**10
 
    threads = 2**2
 
@@ -41,49 +48,50 @@ program loop_main
 
    ! NAIVE IMPLEMENTATION
    ! Function call: call loop_naive(rows(in), columns(in), threads(in), time(out) )
-   call loop_naive(M,N,threads,time(1,j))
-   !print '("Naive Loop Time = ",f10.7," seconds.")',time
+   call loop_naive(M,N,threads,time(1,j),sumc(1,j))
    ! END OF NAIVE IMPLEMENTATION
 
    ! TILE IMPLEMENTATION
-   i_tile = 2**2
-   j_tile = 2**2
+   i_tile = 2**1
+   j_tile = 2**1
    ! Function call loop_tile(rows(in), columns(in), threads(in), i_tile(in), j_tile (in) time(out))
-   call loop_tile(M,N,threads,i_tile,j_tile,time(2,j))
-   !print '("Tiled Loop Time = ",f10.7," seconds.")',time
+   call loop_tile(M,N,threads,i_tile,j_tile,time(2,j),sumc(2,j))
    ! END OF TILE IMPLEMENTATION
 
 
    ! Adding more calls for different tile sizes
    
-   i_tile = 2**4
+   i_tile = 2**1
    j_tile = 2**4
-   call loop_tile(M,N,threads,i_tile,j_tile,time(3,j))
-   !print '("Tiled Loop Time = ",f10.7," seconds.")',time
+   !call loop_tile(M,N,threads,i_tile,j_tile,time(3,j),sumc(3,j))
+
+   i_tile = 2**4
+   j_tile = 2**1
+   !call loop_tile(M,N,threads,i_tile,j_tile,time(4,j),sumc(4,j))
 
    i_tile = 2**8
-   j_tile = 2**8
-   call loop_tile(M,N,threads,i_tile,j_tile,time(4,j))
-   !print '("Tiled Loop Time = ",f10.7," seconds.")',time
+   j_tile = 2**1
+   !call loop_tile(M,N,threads,i_tile,j_tile,time(5,j),sumc(5,j))
 
-   i_tile = 2**10
-   j_tile = 2**10
-   call loop_tile(M,N,threads,i_tile,j_tile,time(5,j))
-   !print '("Tiled Loop Time = ",f10.7," seconds.")',time
+   i_tile = 2**1
+   j_tile = 2**8
+   !call loop_tile(M,N,threads,i_tile,j_tile,time(6,j),sumc(6,j))
 
    end do 
 
-   ! Calculating average time
-   do i = 1,5
+   ! Calculating average time and sum
+   do i = 1,6
      do j = 1,10    
          avgtime(i) = avgtime(i) + time(i,j) 
+         avgsum(i)  = avgsum(i)  + sumc(i,j)
      end do
    end do
    avgtime = avgtime/10
+   avgsum  = avgsum/10
 
    ! Displaying time
-   do i = 1,5
-      print '("Time = ",f10.7," seconds.")',avgtime(i)
+   do i = 1,6
+      print '("Time = ",f10.7," seconds & Checksum = ",e10.3,"")',avgtime(i),avgsum(i)
    end do
 
 end program loop_main

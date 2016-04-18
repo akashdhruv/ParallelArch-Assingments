@@ -15,16 +15,18 @@ module loop_module
     
      interface
 
-       subroutine loop_naive(M,N,th,time)
+       subroutine loop_naive(M,N,th,time,sumc)
        implicit none
        integer, intent(in) :: M,N,th
        real, intent(out) :: time
+       double precision, intent(out) :: sumc
        end subroutine loop_naive
 
-       subroutine loop_tile(M,N,th,i_tile,j_tile,time)
+       subroutine loop_tile(M,N,th,i_tile,j_tile,time,sumc)
        implicit none
        integer, intent(in) :: M,N,th,i_tile,j_tile
        real, intent(out) :: time
+       double precision, intent(out) :: sumc
        end subroutine loop_tile
 
      end interface

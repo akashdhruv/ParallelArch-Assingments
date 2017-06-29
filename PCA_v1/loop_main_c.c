@@ -16,43 +16,66 @@ int main(int argc, char *argv[])
 
    int i,j,ii,jj,i_tile,j_tile;
 
-   const int N=2^20;
+   const int N=100000;
+   double sumC_n, sumC_t;
 
    double *A = malloc(sizeof(double)*N*N); 
    double *b = malloc(sizeof(double)*N);
-   double *c = malloc(sizeof(double)*N);
+   double *c_naive = malloc(sizeof(double)*N);
+   double *c_tile=malloc(sizeof(double)*N);
 
-   i_tile = 8;
-   j_tile = 8;
+   sumC_n = 0.0;
+   sumC_t = 0.0;
+
+   j_tile = 10000;
+   i_tile = 10000;
 
    for (i=0; i<N; i++){
      for (j=0; j<N; j++){
-        A[i*N+j] = i*N+j;
+        A[i*N+j] = (i+1)*N+j+1;
      }
    }
 
    for (i=0; i<N; i++){
-       b[i] = i^2;
+       b[i]       = (i+1)^2;
+       c_naive[i] = 0.0;
+       c_tile[i]  = 0.0;
    }
 
+
+   double start_n=get_wall_time();
+   for(i=0; i<N; i++){
+     for(j=0; j<N; j++){
+        c_naive[i] += A[i*N+j]*b[j];
+     }
+   }   
+   double finish_n=get_wall_time();
+
    double start=get_wall_time();  
-   #pragma omp for private(i,j,ii,jj) shared(A,b,c,i_tile,j_tile) num_threads(4)
-   for(ii=0; ii<N; ii+=i_tile){
+   //#pragma omp for private(i,j,ii,jj) shared(A,b,c,i_tile,j_tile) num_threads(4)
      for(jj=0; jj<N; jj+=j_tile){
-       for(i=ii; i<ii+i_tile; i++){
+       for(i=0; i<N; i++){
         for(j=jj; j<jj+j_tile; j++){
-               c[i] += A[i*N+j]*b[j];
+               c_tile[i] += A[i*N+j]*b[j];
         }
       }
      }
-   }
    double finish=get_wall_time();
+
+  for(i=0;i<N;i++){
+ 
+     sumC_n = sumC_n + c_naive[i];
+     sumC_t = sumC_t + c_tile[i];
+
+  }
 
   free(A);
   free(b);
-  free(c);
+  free(c_naive);
+  free(c_tile);
 
-  printf("Time: %f seconds\n",finish-start);
+  printf("Naive Time: %f seconds and SUM: %f\n",finish_n-start_n,sumC_n);
+  printf("Tiled Time: %f seconds and SUM: %f\n",finish-start,sumC_t);
   
   return 0;
 

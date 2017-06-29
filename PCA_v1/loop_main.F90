@@ -26,43 +26,44 @@ program loop_main
    integer :: i_tile, j_tile
    real :: time
    integer :: threads
+   real :: sumC, sumC2, sumC3, sumC4, sumC5
 
-   M = 2**12
-   N = 2**12
+   M = 10000
+   N = 10000
 
-   threads = 2**2
+   threads = 1
 
    ! NAIVE IMPLEMENTATION
    ! Function call: call loop_naive(rows(in), columns(in), threads(in), time(out) )
-   call loop_naive(M,N,threads,time)
-   print '("Naive Loop Time = ",f10.7," seconds.")',time
+   call loop_naive(M,N,threads,time,sumC)
+   print '("Naive Loop Time = ",f10.7," seconds, and SUM = ",f32.7,"")',time,sumC
    ! END OF NAIVE IMPLEMENTATION
 
    ! TILE IMPLEMENTATION
-   i_tile = 2**2
-   j_tile = 2**2
+   i_tile = 1
+   j_tile = 20
    ! Function call loop_tile(rows(in), columns(in), threads(in), i_tile(in), j_tile (in) time(out))
-   call loop_tile(M,N,threads,i_tile,j_tile,time)
-   print '("Tiled Loop Time = ",f10.7," seconds.")',time
+   call loop_tile(M,N,threads,i_tile,j_tile,time,sumC2)
+   print '("Tiled Loop Time = ",f10.7," seconds, and SUM = ",f32.7,"")',time,sumC2
    ! END OF TILE IMPLEMENTATION
 
 
    ! Adding more calls for different tile sizes
    
-   i_tile = 2**4
-   j_tile = 2**4
-   call loop_tile(M,N,threads,i_tile,j_tile,time)
-   print '("Tiled Loop Time = ",f10.7," seconds.")',time
+   i_tile = 1
+   j_tile = 50
+   call loop_tile(M,N,threads,i_tile,j_tile,time,sumC3)
+   print '("Tiled Loop Time = ",f10.7," seconds, and SUM = ",f32.7,"")',time,sumC3
 
-   i_tile = 2**8
-   j_tile = 2**8
-   call loop_tile(M,N,threads,i_tile,j_tile,time)
-   print '("Tiled Loop Time = ",f10.7," seconds.")',time
+   i_tile = 1
+   j_tile = 100
+   call loop_tile(M,N,threads,i_tile,j_tile,time,sumC4)
+   print '("Tiled Loop Time = ",f10.7," seconds, and SUM = ",f32.7,"")',time,sumC4
 
-   i_tile = 2**10
-   j_tile = 2**10
-   call loop_tile(M,N,threads,i_tile,j_tile,time)
-   print '("Tiled Loop Time = ",f10.7," seconds.")',time
+   i_tile = 1
+   j_tile = 200
+   call loop_tile(M,N,threads,i_tile,j_tile,time,sumC5)
+   print '("Tiled Loop Time = ",f10.7," seconds, and SUM = ",f32.7,"")',time,sumC5
 
 
 end program loop_main
